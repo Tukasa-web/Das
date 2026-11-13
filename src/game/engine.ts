@@ -118,7 +118,12 @@ export class PlatformerEngine {
     this.onHudChange = onHudChange;
     try {
       const saved = window.localStorage.getItem(HIGH_SCORE_KEY);
-      if (saved) this.highScore = parseInt(saved, 10) || 0;
+      if (saved && /^\d{1,9}$/.test(saved)) {
+        const parsed = Number.parseInt(saved, 10);
+        if (Number.isSafeInteger(parsed) && parsed >= 0 && parsed <= 99_999_999) {
+          this.highScore = parsed;
+        }
+      }
     } catch {
       // ignore
     }
